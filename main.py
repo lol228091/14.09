@@ -120,6 +120,17 @@ def save_note():
 	else:
 		print("Error while saving")						
 
+def add_tag():
+	if list_notes.selectedItems():
+		key = list_notes.selectedItems()[0].text()
+		tag = field_tag.text()
+
+		if tag != "":
+			for index, note in enumerate(notes):
+				if note[0] == key:
+					if tag not in note[2]:
+						note[2].append(tag)
+
 list_notes.itemClicked.connect(show_note)
 button_note_create.clicked.connect(add_note)
 button_note_save.clicked.connect(save_note)
