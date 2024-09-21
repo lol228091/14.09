@@ -130,11 +130,51 @@ def add_tag():
 				if note[0] == key:
 					if tag not in note[2]:
 						note[2].append(tag)
+						list_tags.addItem(tag)
+
+						with open(str(index)+".txt","w") as file:
+							file.write(note[0], "\n")
+							file.write(note[1], "\n")
+							file.write("".join(note[2]))
+			field_tag.clear()
+		else:
+			print("Tag is empty")
+	else:
+		print("No note selected")
+
+def delete_tag():
+	if list_notes.selectedItems() and list_tags.selectedItems():
+		key = list_notes.selectedItems()[0].text()
+		tag = list_tags.selectedItems()[0].text()
+
+		for note in notes:
+			if note[0] == key:
+				if tag in note[2]:
+					note[2].remove(tag)
+					list_tags.clear()
+					list_tags.addItems(note[2])
+		print(notes)
+	else:
+		print("Error: Either note or tag not selected")
+
+def search_by_tag():
+	tag = field_tag.text()
+
+	if tag:
+		matching_notes = [note[0] for note in notes if tag in note[2]]
+		list_notes.clear
+		list_notes.addItems(matching_notes)
+	else:
+		for note in notes:
+			list_notes.addItem(note[0])
+
 
 list_notes.itemClicked.connect(show_note)
 button_note_create.clicked.connect(add_note)
 button_note_save.clicked.connect(save_note)
-
+button_tag_add.clicked.connect(add_tag)
+button_tag_del.clicked.connect(delete_tag)
+button_tag_search.clicked.connect(search_by_tag)
 # запуск програми
 notes_win.show()
 
